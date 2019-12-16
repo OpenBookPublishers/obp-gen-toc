@@ -110,12 +110,26 @@ def generate_toc(data):
                 title_tag = soup.new_tag('p', **attrs)
                 title_tag.string = entry[element]['title']
 
+                # Download block
+                attrs = {'style': 'float: right;'}
+                span_tag = soup.new_tag('span', **attrs)
+
+                attrs = {'href': entry[element]['pdf_url']}
+                a_tag = soup.new_tag('a', **attrs)
+                a_tag.string = 'Download'
+
+                span_tag.append(a_tag)
+                title_tag.append(span_tag)
+                
+                # append <br>
+                title_tag.append(soup.new_tag('br'))
+                
                 # Author
                 attrs = {'class': 'authors'}
                 authors_tag = soup.new_tag('i', **attrs)
                 authors_tag.string = entry[element]['authors']
 
-                title_tag.string.insert_after(authors_tag)
+                title_tag.append(authors_tag)
 
         source_tag.append(title_tag)
 
@@ -123,7 +137,7 @@ def generate_toc(data):
         br = soup.new_tag('br')
         source_tag.append(br)
         
-    print(source_tag)
+    print(source_tag.prettify())
 
 def run():
     parser = argparse.ArgumentParser(description='Generate TOC for JShop')
