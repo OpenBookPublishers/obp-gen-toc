@@ -133,10 +133,6 @@ def generate_toc(data):
 
         source_tag.append(title_tag)
 
-        # br
-        br = soup.new_tag('br')
-        source_tag.append(br)
-        
     print(source_tag.prettify())
 
 def run():
