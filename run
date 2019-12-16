@@ -6,4 +6,5 @@ cd $(dirname $0)
 book_name=$1
 
 python3 ./src/generate_toc_pdf_reader.py ${book_name}.pdf > PDF-reader.txt
-
+python3 ./src/generate_toc_jshop.py ${book_name}.xml \
+	                            ${book_name}.pdf > Jshop-TOC.txt
