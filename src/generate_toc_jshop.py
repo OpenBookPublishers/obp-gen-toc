@@ -1,6 +1,8 @@
 import argparse
+from outline import Outline
 from os import path
 from bs4 import BeautifulSoup
+from fuzzywuzzy import fuzz
 
 
 def get_chapters(soup):
@@ -20,8 +22,8 @@ def join_author_names(names):
     i.e. ['author1', 'author2', 'author3'] 
          -> 'author1, author2 and author3'
     '''
-    return ", ".join(names[:-2] \
-                     + [" and ".join(names[-2:])])
+    return ', '.join(names[:-2] \
+                     + [' and '.join(names[-2:])])
 
 
 def get_authors(chapter):
@@ -72,19 +74,88 @@ def get_doi_chapters(file_path):
             pdf_url = get_pdf_url(chapter)
 
             data.update({title: {'authors':authors,
-                                 'pdf_url': pdf_url}})
+                                 'pdf_url': pdf_url,
+                                 'title': title}})
 
         return data
 
 
+def check_match(chapter, doi_chapter):
+    '''
+    Fuzzy string matching between two chapter names; returns a 
+    (int) ratio of the match.
+    '''
+    ratio = fuzz.ratio(chapter.lower(), doi_chapter.lower())
+
+    return ratio
+
+
+def generate_toc(data):
+    soup = BeautifulSoup('<div></div>', 'html.parser')
+
+    source_tag = soup.div
+
+    for entry in data:
+
+        # if entry is not a dictionary
+        if type(entry) is not dict:
+            attrs = {'class': 'title'}
+            title_tag = soup.new_tag('p', **attrs)
+            title_tag.string = entry
+
+        else:
+            for element in entry:
+                # Title
+                attrs = {'class': 'title'}
+                title_tag = soup.new_tag('p', **attrs)
+                title_tag.string = entry[element]['title']
+
+                # Author
+                attrs = {'class': 'authors'}
+                authors_tag = soup.new_tag('i', **attrs)
+                authors_tag.string = entry[element]['authors']
+
+                title_tag.string.insert_after(authors_tag)
+
+        source_tag.append(title_tag)
+
+        # br
+        br = soup.new_tag('br')
+        source_tag.append(br)
+        
+    print(source_tag)
+
 def run():
     parser = argparse.ArgumentParser(description='Generate TOC for JShop')
     parser.add_argument('doi_file', help='Input DOI deposit file')
+    parser.add_argument('pdf_file', help='Input PDF deposit file')
 
     args = parser.parse_args()
 
-    doi_chapter_data = get_doi_chapters(path.abspath(args.doi_file))
-    print(doi_chapter_data)
+    # Get a (simple) list of the chapters
+    outline = Outline(path.abspath(args.pdf_file))
+    chapters = outline.get_chapter_list()
+
+    # Make a dictionary with chapters with DOI and related info
+    # (author name(s), chapter title and PDF url)
+    doi_chapters = get_doi_chapters(path.abspath(args.doi_file))
+
+    # Merge in data the information of the first list
+    # and the dictionary
+    data = []
+    
+    for chapter in chapters:
+        for doi_chapter in doi_chapters:
+
+            # Find (fuzzy) string matches
+            if check_match(chapter, doi_chapter) > 90:
+                data.append({doi_chapter: doi_chapters[doi_chapter]})
+                break
+
+        else:
+            data.append(chapter)
+
+    generate_toc(data)
 
 
 if __name__ == "__main__":
