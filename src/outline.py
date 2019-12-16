@@ -9,7 +9,7 @@ class Outline():
 
     def get_chapter_list(self):
         chapters = []
-    
+
         for entry in self.outlines:
 
             try:

@@ -13,12 +13,12 @@ def generate_toc(input_file):
         try:
             title = entry['/Title']
             page_number = reader.getDestinationPageNumber(entry) + 1
-            
+
         except:
             continue
 
         print(title + ' {' + str(page_number) + '}')
-    
+
 
 def run():
     parser = argparse.ArgumentParser(description='Generate TOC for PDF reader')

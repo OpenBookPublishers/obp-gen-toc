@@ -16,13 +16,13 @@ def get_chapters(soup):
 
 def join_author_names(names):
     '''
-    Take a list of author names and return a string of names 
+    Take a list of author names and return a string of names
     in a pretty format.
-    
-    i.e. ['author1', 'author2', 'author3'] 
+
+    i.e. ['author1', 'author2', 'author3']
          -> 'author1, author2 and author3'
     '''
-    return ', '.join(names[:-2] \
+    return ', '.join(names[:-2]
                      + [' and '.join(names[-2:])])
 
 
@@ -34,10 +34,10 @@ def get_authors(chapter):
     contributors = chapter.find_all('person_name')
 
     names = []
-     
+
     for person in contributors:
-        names.append(person.find('given_name').text \
-                     + ' ' \
+        names.append(person.find('given_name').text
+                     + ' '
                      + person.find('surname').text)
 
     return join_author_names(names)
@@ -73,7 +73,7 @@ def get_doi_chapters(file_path):
             title = get_title(chapter)
             pdf_url = get_pdf_url(chapter)
 
-            data.update({title: {'authors':authors,
+            data.update({title: {'authors': authors,
                                  'pdf_url': pdf_url,
                                  'title': title}})
 
@@ -82,7 +82,7 @@ def get_doi_chapters(file_path):
 
 def check_match(chapter, doi_chapter):
     '''
-    Fuzzy string matching between two chapter names; returns a 
+    Fuzzy string matching between two chapter names; returns a
     (int) ratio of the match.
     '''
     ratio = fuzz.ratio(chapter.lower(), doi_chapter.lower())
@@ -120,10 +120,10 @@ def generate_toc(data):
 
                 span_tag.append(a_tag)
                 title_tag.append(span_tag)
-                
+
                 # append <br>
                 title_tag.append(soup.new_tag('br'))
-                
+
                 # Author
                 attrs = {'class': 'authors'}
                 authors_tag = soup.new_tag('i', **attrs)
@@ -134,6 +134,7 @@ def generate_toc(data):
         source_tag.append(title_tag)
 
     print(source_tag.prettify())
+
 
 def run():
     parser = argparse.ArgumentParser(description='Generate TOC for JShop')
@@ -153,7 +154,7 @@ def run():
     # Merge in data the information of the first list
     # and the dictionary
     data = []
-    
+
     for chapter in chapters:
         for doi_chapter in doi_chapters:
 
