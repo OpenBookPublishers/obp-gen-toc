@@ -9,11 +9,15 @@ def generate_toc(input_file):
     outlines = reader.outlines
 
     for entry in outlines:
-        string = entry['/Title'] \
-                 + ' {' \
-                 +  str(reader.getDestinationPageNumber(entry) + 1) \
-                 + '}'
-        print(string)
+
+        try:
+            title = entry['/Title']
+            page_number = reader.getDestinationPageNumber(entry) + 1
+            
+        except:
+            continue
+
+        print(title, '{', page_number, '}')
     
 
 def run():
