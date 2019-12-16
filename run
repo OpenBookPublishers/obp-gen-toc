@@ -3,8 +3,10 @@
 set -eu
 cd $(dirname $0)
 
+out_dir="${OUTDIR:-./}"
+
 book_name=$1
 
-python3 ./src/generate_toc_pdf_reader.py ${book_name}.pdf > PDF-reader.txt
+python3 ./src/generate_toc_pdf_reader.py ${book_name}.pdf > $out_dir/PDF-reader.txt
 python3 ./src/generate_toc_jshop.py ${book_name}.xml \
-	                            ${book_name}.pdf > Jshop-TOC.txt
+	                            ${book_name}.pdf > $out_dir/Jshop-TOC.txt
