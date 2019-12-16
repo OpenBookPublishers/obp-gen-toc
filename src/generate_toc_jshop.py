@@ -114,7 +114,7 @@ def generate_toc(data):
                 attrs = {'style': 'float: right;'}
                 span_tag = soup.new_tag('span', **attrs)
 
-                attrs = {'href': entry[element]['pdf_url']}
+                attrs = {'href': entry[element]['pdf_url'].lower()}
                 a_tag = soup.new_tag('a', **attrs)
                 a_tag.string = 'Download'
 
