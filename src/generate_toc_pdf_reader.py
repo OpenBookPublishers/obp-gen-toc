@@ -17,7 +17,7 @@ def generate_toc(input_file):
         except:
             continue
 
-        print(title, '{', page_number, '}')
+        print(title + ' {' + str(page_number) + '}')
     
 
 def run():
