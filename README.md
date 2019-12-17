@@ -17,5 +17,4 @@ docker run --rm \
 Alternatively you may clone the repo, build the image using `docker build . -t some/tag` and run the command above replacing `openbookpublishers/obp-gen-toc` with `some/tag`.
 
 ## DEV
- -  TODO: make `outline.py` a dependency of `generate_toc_pdf_reader.py`, merging some of the code;
  -  Multi-level TOC for `generate_toc_jshop.py`?

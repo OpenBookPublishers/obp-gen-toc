@@ -1,23 +1,27 @@
 import argparse
+from outline import Outline
 from os import path
-from PyPDF2 import PdfFileReader
 
 
 def generate_toc(input_file):
-    reader = PdfFileReader(input_file)
+    '''
+    Print to standard output the table of content for
+    obp-gen-pdfreader integration, such as:
 
-    outlines = reader.outlines
+    Introduction {1}
+    Chapter 1 {3}
+    [...]
+    '''
 
-    for entry in outlines:
+    outlines = Outline(input_file)
 
-        try:
-            title = entry['/Title']
-            page_number = reader.getDestinationPageNumber(entry) + 1
+    chapters = outlines.get_data()
 
-        except:
-            continue
-
-        print(title + ' {' + str(page_number) + '}')
+    for entry in chapters:
+        print(entry['title']
+              + ' {'
+              + str(entry['page_number'])
+              + '}')
 
 
 def run():
