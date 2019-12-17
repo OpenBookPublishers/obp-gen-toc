@@ -5,7 +5,7 @@ from os import path
 
 def generate_toc(input_file):
     '''
-    Print to standard output the table of content for
+    Print to standard output the table of contents for
     obp-gen-pdfreader integration, such as:
 
     Introduction {1}

@@ -7,8 +7,8 @@ from fuzzywuzzy import fuzz
 
 def get_chapters(soup):
     '''
-    Extract chapters from the (beautiful suop object)
-    doi deposit.
+    Extract chapters from the (beautiful soup object)
+    DOI deposit.
     '''
     return soup.find_all('content_item',
                          {'component_type': 'chapter'})
@@ -28,7 +28,7 @@ def join_author_names(names):
 
 def get_authors(chapter):
     '''
-    Takes a (beautiful suop object) chapter and
+    Takes a (beautiful soup object) chapter and
     return a string with author name(s).
     '''
     contributors = chapter.find_all('person_name')
@@ -45,7 +45,7 @@ def get_authors(chapter):
 
 def get_title(chapter):
     '''
-    Get chapter title from the (beautiful suop object)
+    Get chapter title from the (beautiful soup object)
     given chapter.
     '''
     return chapter.find('title').text
@@ -53,7 +53,7 @@ def get_title(chapter):
 
 def get_pdf_url(chapter):
     '''
-    Get the PDF url from the (beautiful suop object)
+    Get the PDF URL from the (beautiful soup object)
     given chapter.
     '''
     return chapter.find('resource', {'mime_type': 'application/pdf'}).text
@@ -148,7 +148,7 @@ def run():
     chapters = outline.get_chapter_list()
 
     # Make a dictionary with chapters with DOI and related info
-    # (author name(s), chapter title and PDF url)
+    # (author name(s), chapter title and PDF URL)
     doi_chapters = get_doi_chapters(path.abspath(args.doi_file))
 
     # Merge in data the information of the first list
