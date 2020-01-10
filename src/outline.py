@@ -1,37 +1,66 @@
 #!/usr/bin/env python3
-from PyPDF2 import PdfFileReader
-
+import subprocess
+import re
 
 class Outline():
     '''
     Get a PDF file as input and extract information such as
-    chapter names and page numbers
+    chapter names and page numbers up to the specified TOC level
     '''
-    def __init__(self, pdf_file):
-        reader = PdfFileReader(pdf_file)
-        outlines = reader.outlines
+    def __init__(self, pdf_file, level):
+        # Get the complete outline
+        outline = self.get_outline(pdf_file)
+
+        # Reduce the outline to the specified TOC level
+        reduced_outline = self.reduce_outline(outline, level)
 
         self.chapters = []
-        self.extract_data(reader, outlines)
+        self.extract_data(reduced_outline)
 
-    def extract_data(self, reader, outlines):
+    def get_outline(self, pdf_file):
+        '''
+        Extract outline from the PDF file. Take the file path (str) of
+        the PDF and return the the complete outline (str).
+
+        Levels are indented with (leading) tabs.
+        '''
+        cmd = ['mutool', 'show', pdf_file, 'outline']
+
+        run = subprocess.run(cmd, stdout=subprocess.PIPE)
+        outline = run.stdout.decode('utf-8')
+
+        return outline
+
+    def reduce_outline(self, outline, level):
+        '''
+        Reduce the outline to the specified (int) TOC level.
+        Return a clean string of the resulting outline.
+        
+        A tab character separates title from page number
+        i.e. 'This is a chapter title\t10'
+        '''
+        # Match lines starting with as many tab as in the
+        # range {level,} and remove them
+        pattern = r'^\t{%s,}.*\n?' % level
+        reduced_outline = re.sub(pattern, '', outline,
+                                 flags=re.MULTILINE)
+
+        # Remove leading tabs
+        clean_outline = re.sub(r'^\t', '', reduced_outline,
+                               flags=re.MULTILINE)
+        
+        return clean_outline
+
+    def extract_data(self, reduced_outline):
         '''
         Extract chapter titles and page numbers and place them
         into a (python) list of dictionaries.
         i.e. [{'title': 'ch1', 'page_number': 1},
               {'title': 'ch2', 'page_number': 2}]
         '''
-        for entry in outlines:
-
-            try:
-                title = entry['/Title']
-                page_number = reader.getDestinationPageNumber(entry) + 1
-
-            except TypeError:
-                continue
-
-            self.chapters.append({'title': title,
-                                  'page_number': page_number})
+        for line in reduced_outline.splitlines():
+            self.chapters.append({'title': line.split('\t')[0],
+                                  'page_number': line.split('\t')[1]})
 
     def get_chapter_list(self):
         '''
