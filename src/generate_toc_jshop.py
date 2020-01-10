@@ -140,11 +140,13 @@ def run():
     parser = argparse.ArgumentParser(description='Generate TOC for JShop')
     parser.add_argument('doi_file', help='Input DOI deposit file')
     parser.add_argument('pdf_file', help='Input PDF deposit file')
-
+    parser.add_argument('-l', '--level', default=1,
+                        help='TOC level to which to parse to')
+    
     args = parser.parse_args()
 
     # Get a (simple) list of the chapters
-    outline = Outline(path.abspath(args.pdf_file))
+    outline = Outline(path.abspath(args.pdf_file), args.level)
     chapters = outline.get_chapter_list()
 
     # Make a dictionary with chapters with DOI and related info
