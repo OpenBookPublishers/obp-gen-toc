@@ -109,14 +109,14 @@ def generate_toc(data):
 
         # if entry is not a dictionary
         if type(entry) is not dict:
-            attrs = {'class': 'title'}
+            attrs = {'class': 'TOC-title'}
             title_tag = soup.new_tag('p', **attrs)
             title_tag.string = entry
 
         else:
             for element in entry:
                 # Title
-                attrs = {'class': 'title'}
+                attrs = {'class': 'TOC-title'}
                 title_tag = soup.new_tag('p', **attrs)
                 title_tag.string = entry[element]['title']
 
@@ -135,7 +135,7 @@ def generate_toc(data):
                 title_tag.append(soup.new_tag('br'))
 
                 # Author
-                attrs = {'class': 'authors'}
+                attrs = {'class': 'TOC-authors'}
                 authors_tag = soup.new_tag('i', **attrs)
                 authors_tag.string = entry[element]['authors']
 
