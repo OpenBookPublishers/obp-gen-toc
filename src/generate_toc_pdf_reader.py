@@ -18,10 +18,7 @@ def generate_toc(input_file, level):
     chapters = outlines.get_data()
 
     for entry in chapters:
-        print(entry['title']
-              + ' {'
-              + entry['page_number']
-              + '}')
+        print('%s {%s}' % (entry['title'], entry['page_number']))
 
 
 def run():

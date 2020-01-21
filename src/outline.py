@@ -48,7 +48,7 @@ class Outline():
         # Remove leading tabs
         clean_outline = re.sub(r'^\t', '', reduced_outline,
                                flags=re.MULTILINE)
-        
+
         return clean_outline
 
     def extract_data(self, reduced_outline):
@@ -60,7 +60,7 @@ class Outline():
         '''
         for line in reduced_outline.splitlines():
             self.chapters.append({'title': line.split('\t')[0],
-                                  'page_number': line.split('\t')[1]})
+                                  'page_number': line.split('\t#')[1]})
 
     def get_chapter_list(self):
         '''
