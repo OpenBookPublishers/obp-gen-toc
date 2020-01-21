@@ -47,9 +47,19 @@ def get_title(chapter):
     '''
     Get chapter title from the (beautiful soup object)
     given chapter.
-    '''
-    return chapter.find('title').text
 
+    If there is a subtitle, this method returns title and subtitle.
+    Otherwise, only the title is returned.
+    '''
+    title = chapter.find('title').text
+
+    # Join title and subtitle (if present)
+    subtitle = chapter.find('subtitle')
+
+    if subtitle:
+        title = ': '.join([title, subtitle.text])
+
+    return title
 
 def get_pdf_url(chapter):
     '''
@@ -159,7 +169,6 @@ def run():
 
     for chapter in chapters:
         for doi_chapter in doi_chapters:
-
             # Find (fuzzy) string matches
             if check_match(chapter, doi_chapter) > 90:
                 data.append({doi_chapter: doi_chapters[doi_chapter]})
