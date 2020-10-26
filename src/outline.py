@@ -2,6 +2,7 @@
 import subprocess
 import re
 
+
 class Outline():
     '''
     Get a PDF file as input and extract information such as
@@ -35,7 +36,7 @@ class Outline():
         '''
         Reduce the outline to the specified (int) TOC level.
         Return a clean string of the resulting outline.
-        
+
         A tab character separates title from page number
         i.e. 'This is a chapter title\t10'
         '''

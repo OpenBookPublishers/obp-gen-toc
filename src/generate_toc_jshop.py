@@ -61,6 +61,7 @@ def get_title(chapter):
 
     return title
 
+
 def get_pdf_url(chapter):
     '''
     Get the PDF URL from the (beautiful soup object)
@@ -156,7 +157,7 @@ def run():
     parser.add_argument('pdf_file', help='Input PDF deposit file')
     parser.add_argument('-l', '--level', default=1,
                         help='TOC level to which to parse to')
-    
+
     args = parser.parse_args()
 
     # Get a (simple) list of the chapters
