@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import fitz
 
+
 class Outline():
     '''
     Get a PDF file as input and extract information such as
