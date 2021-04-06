@@ -3,7 +3,7 @@ FROM python:3.8.0-slim-buster
 WORKDIR /ebook_automation
 
 RUN apt-get update && \
-    apt-get -y install gcc mupdf-tools
+    apt-get -y install gcc
 
 COPY requirements.txt ./
 
