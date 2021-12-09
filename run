@@ -11,4 +11,3 @@ python3 ./src/generate_toc_jshop.py ${book_name}.xml \
 	                            ${book_name}.pdf \
 	                            -l $TOC_LEVEL > $out_dir/Jshop-TOC.txt
 
-python3 ./src/thoth_wrapper.py --toc $out_dir/Jshop-TOC.txt
