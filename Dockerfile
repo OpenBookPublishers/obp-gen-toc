@@ -14,4 +14,6 @@ COPY ./src/ ./src/
 
 ENV OUTDIR=/ebook_automation/output
 
-CMD bash run file
+ENTRYPOINT ["python3"]
+
+CMD ["python3", "./src/thoth_wrapper.py" "--help"]
