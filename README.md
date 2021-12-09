@@ -36,7 +36,25 @@ docker run --rm \
   -v /path/to/local/file.pdf:/ebook_automation/file.pdf \
   -v /path/to/output:/ebook_automation/output \
   -e TOC_LEVEL=1 \
-  openbookpublishers/obp-gen-toc
+  openbookpublishers/obp-gen-toc \
+  bash run file
 ```
 
 Alternatively you may clone the repo, build the image using `docker build . -t some/tag` and run the command above replacing `openbookpublishers/obp-gen-toc` with `some/tag`.
+
+## Thoth wrapper
+
+In the repository is available a wrapper to upload the toc to Thoth (as plain text). The new command would be:
+
+```
+docker run --rm \
+           --user `id -u`:`id -g` \
+           -v `pwd`/input/file.xml:/ebook_automation/file.xml \
+           -v `pwd`/input/file.pdf:/ebook_automation/file.pdf \
+           -v `pwd`/output/obp-gen-toc:/ebook_automation/output \
+           -e TOC_LEVEL=1 \
+           -e THOTH_EMAIL=${THOTH_EMAIL} \
+           -e THOTH_PWD=${THOTH_PWD} \
+           openbookpublishers/obp-gen-toc \
+           ./src/thoth_wrapper.py --doi $(doi)
+```
