@@ -6,9 +6,11 @@ from os import path
 import subprocess
 from thothlibrary import ThothClient
 from os import getenv
+from urllib.parse import urljoin
 
-TOC_PATH=path.abspath('./output/Jshop-TOC.txt')
-RUN_PATH='/ebook_automation/run'
+TOC_PATH = path.abspath('./output/Jshop-TOC.txt')
+RUN_PATH = '/ebook_automation/run'
+
 
 def html2text(toc_path):
     toc = ''
@@ -24,7 +26,6 @@ def html2text(toc_path):
             toc += p.get_text('\n', strip=True) + '\n\n'
 
     return toc
-
 
 def main():
     parser = argparse.ArgumentParser(description='Thoth wrapper')
@@ -43,8 +44,10 @@ def main():
 
     # query Thoth
     client = ThothClient(version="0.6.0")
-    data = client.query('workByDoi',
-                        {'doi': f'"https://doi.org/10.11647/{args.doi}"'})
+
+    doi_url = urljoin('https://doi.org/', args.doi)
+    data = client.query('workByDoi', {'doi': f'"{doi_url}"'})
+
     # update toc
     data['toc'] = toc
 
@@ -58,7 +61,7 @@ def main():
     client.login(thoth_email, thoth_pwd)
 
     if not args.dry_run:
-        mutation = client.mutation('updateWork', data, units='MM')
+        client.mutation('updateWork', data, units='MM')
 
 
 if __name__ == "__main__":
