@@ -54,7 +54,7 @@ docker run --rm \
            ./src/thoth_wrapper.py --doi $(doi)
 ```
 
-Make sure you store your Thoth credential in the env variables $THOTH_EMAIL and $THOTH_PWD.
+Make sure you store your Thoth credentials in the env variables $THOTH_EMAIL and $THOTH_PWD.
 
 ## Contributing
 
