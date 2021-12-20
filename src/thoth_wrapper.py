@@ -27,6 +27,7 @@ def html2text(toc_path):
 
     return toc
 
+
 def main():
     parser = argparse.ArgumentParser(description='Thoth wrapper')
     parser.add_argument('-d', '--doi', help='Work DOI (registered in Thoth)')
