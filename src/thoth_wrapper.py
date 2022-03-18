@@ -44,7 +44,7 @@ def main():
     toc = html2text(TOC_PATH)
 
     # query Thoth
-    client = ThothClient(version="0.6.0")
+    client = ThothClient(version="0.8.0")
 
     doi_url = urljoin('https://doi.org/', args.doi)
     data = client.query('workByDoi', {'doi': f'"{doi_url}"'})
@@ -62,7 +62,7 @@ def main():
     client.login(thoth_email, thoth_pwd)
 
     if not args.dry_run:
-        client.mutation('updateWork', data, units='MM')
+        client.mutation('updateWork', data)
 
 
 if __name__ == "__main__":
